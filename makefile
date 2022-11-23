@@ -15,6 +15,9 @@ help:
 	@echo 'Available commands:'
 	@echo -e 'gcp-auth \t\t - \t Authenticates with GCP'
 
+###################################################################################
+# GCP
+###################################################################################
 gcp: gcp-auth gcp-project
 
 gcp-auth:
@@ -35,10 +38,29 @@ gcp-vm-create:
 gcp-vm-delete:
 	gcloud compute instances delete $(gcp-instance-name) --zone=$(gcp-zone) --quiet
 
+###################################################################################
+# PACKER
+###################################################################################
 packer: packer-validate packer-build
 
 packer-validate:
 	packer validate $(image-definition-file)
 
 packer-build:
-	packer build $(image-definition-file)
+	packer build -force $(image-definition-file)
+
+
+###################################################################################
+# MICROSERVICE
+###################################################################################
+docker: docker-build docker-push
+
+docker-auth:
+	gcloud auth configure-docker --quiet
+
+docker-build:
+	docker build -f ./src/products-rest-api/dockerfile ./src/products-rest-api -t "gcr.io/$(gcp-project)/products-rest-api"
+
+docker-push:
+	docker push gcr.io/$(gcp-project)/products-rest-api
+
