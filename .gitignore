@@ -103,6 +103,6 @@ dist
 # TernJS port file
 .tern-port
 
+pocs-service-account*.json
 
-pocs-service-account.json
 tmp/
