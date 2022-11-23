@@ -1,0 +1,21 @@
+{
+  "builders": [
+    {
+      "type": "googlecompute",
+      "account_file": "pocs-service-account.json",
+      "project_id": "pocs-369513",
+      "source_image": "debian-11-bullseye-v20221102",
+      "ssh_username": "packer",
+      "zone": "europe-west4-a",
+      "image_name": "gcp-lb-image",
+      "image_family": "gcp-lb-image-debian-11"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "hello.txt",
+      "destination": "/tmp/hello.txt"
+    }
+  ]
+}
